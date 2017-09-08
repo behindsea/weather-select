@@ -16,7 +16,7 @@ try:
 except:
     print("创建数据库报错")
 
-def help():
+def get_help():
     return """<h3>帮助</h3><br/>
     <p>输入城市名并点击查询查询该城市的天气数据；</p>
     <p>点击帮助，获取帮助文档；</p>
@@ -87,7 +87,7 @@ def getweather():
                 outputdata = "没有任何记录"
 
         elif action == "帮助":
-            outputdata = help()
+            outputdata = get_help()
 
         elif action == "更正":
             alterData = request.form['city'].split()
@@ -112,4 +112,4 @@ def getweather():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host = 0.0.0.0)
