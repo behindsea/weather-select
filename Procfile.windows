@@ -1,0 +1,1 @@
+web: python chr4stand.py runserver 0.0.0.0:5000
