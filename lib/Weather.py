@@ -9,7 +9,7 @@ class Weather(object):
         self.key = '4r9bergjetiv1tsd'
         self.language = 'zh-Hans'
         self.unit = 'c'
-        self.timeout = 1
+        self.timeout = 3
 
     def getnow(self, city):
         """根据输入参数名查询天气数据，返回字典"""

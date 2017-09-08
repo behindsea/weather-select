@@ -1,1 +1,1 @@
-web: python chr4stand.py
+web: gunicorn app:app
