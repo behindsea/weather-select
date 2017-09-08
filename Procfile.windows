@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 web: python chr4stand.py runserver 0.0.0.0:5000
+=======
+web: python chr4stand.py runserver 0.0.0.0:5000
+>>>>>>> 96f6736d69e7ab1524131eac947d5bdd565da3f0

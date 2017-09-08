@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [[source]]
 url = "https://pypi.python.org/simple"
 verify_ssl = true
@@ -9,3 +10,16 @@ requests = "*"
 
 [requires]
 python_version = "3.6"
+=======
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[packages]
+flask = "*"
+requests = "*"
+
+
+[requires]
+python_version = "3.6"
+>>>>>>> 96f6736d69e7ab1524131eac947d5bdd565da3f0

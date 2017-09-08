@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -73,3 +74,80 @@
 </body>
 
 </html>
+=======
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>天气查询web版</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			padding-top: 10px;
+			text-align: center;
+			font-family: PingFangSC-Regular, Verdana, Arial, '微软雅黑', '宋体';
+			font-size: 14px;
+		}
+
+		#block {
+			width: 100%;
+			margin-bottom: 20px;
+			margin-top: 10px;
+		}
+
+		.text {
+			width: 190px;
+		}
+
+		.submit {
+			width: 50px;
+			margin-top: 10px;
+			margin-bottom: 5px;
+		}
+
+		.select {
+			width: 71px;
+			margin-top: 10px;
+		}
+	</style>
+	<script type="text/javascript">
+		function notEmptyCheck() {
+			if ( document.form1.city.value == "") {
+				alert("城市名不能为空！");
+				return false;
+			}
+		return true;
+		}
+	</script>
+</head>
+
+<body>
+	<form method="post" name="form1" class="form">
+		<h1>天气查询程序web版</h1>
+		<div id="block">
+			城市：
+			<input type="text" name="city" class="text" />
+			<br/>
+
+			<input class="submit" type="submit" value="查询" name="action" />
+			<input class="submit" type="submit" value="历史" name="action" />
+			<input class="submit" type="submit" value="帮助" name="action" />
+			<input class="submit" type="submit" value="更正" name="action" />
+		</div>
+
+		<div id="Weatherdata">
+
+			{{outputdata|safe}}
+
+		</div>
+	</form>
+	<br/><br/><br/>
+	<div>----本程序数据由心知天气提供------</div>
+</body>
+
+</html>
+>>>>>>> 96f6736d69e7ab1524131eac947d5bdd565da3f0
