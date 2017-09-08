@@ -51,29 +51,28 @@ def getweather():
             city = request.form['city']
             html = ''
             if city != '':
-                # try:
-                    #从数据库查询天气数据
-                cur_weath = weathOp.selectWeathByCity(city)
-                print(cur_weath)
-                if cur_weath:
-                    cur_weath = cur_weath[0]
-                else:
-                    #若未查到则从API查询
-                    cur_weath = weath.getnow(city)
+                try:
+                    # 从数据库查询天气数据
+                    cur_weath = weathOp.selectWeathByCity(city)
 
-                html = weath.printnow(cur_weath)
+                    if cur_weath:
+                        cur_weath = cur_weath[0]
+                    else:
+                        #若未查到则从API查询
+                        cur_weath = weath.getnow(city)
+
+                    html = weath.printnow(cur_weath)
                     #升级weather表和history表
-                weathOp.insertOneWeath(cur_weath)
-                hisdic = cur_weath + (cur_user, )
-                historyOp.insertOneHistory(hisdic)
-                # except:
-                #     html = "查询错误！"
+                    weathOp.insertOneWeath(cur_weath)
+                    hisdic = cur_weath + (cur_user, )
+                    historyOp.insertOneHistory(hisdic)
+                except:
+                    html = "查询错误！"
             outputdata = html
 
         elif action == "历史":
-            history = historyOp.selectAllHistory()
-            print(cur_user)
-            print(history)
+            history = historyOp.selectHistoryByUser(cur_user)
+
             if len(history) > 0:
                 html = "<h3>历史查询记录</h3>"
                 i = 1
