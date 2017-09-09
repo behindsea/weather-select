@@ -38,14 +38,3 @@ class Weather(object):
             temper = float(temperature)
             f = temper * 9 / 5 + 32
             return f"{f}°F"
-
-    def printnow(self, weath_dic):
-        """根据字典参数打印返回的数据"""
-        htmldata = ""
-        htmldata += f"{weath_dic[0]}当前天气信息<br/>"
-        htmldata += "  天气：{}，风向：{}，温度：{}。<br/>".format(
-            weath_dic[1],
-            weath_dic[2],
-            self.trantemper(weath_dic[3]))
-        htmldata += f"查询时间:{weath_dic[4]}"
-        return htmldata

@@ -3,7 +3,7 @@ import sqlite3
 from flask import Flask, request, session, render_template
 from lib.Weather import Weather
 from lib.DataOp import WeatherOp, HistoryOp, iniDatabase
-
+from lib.ProgramAction import get_weathdic, get_help, get_user
 
 
 app = Flask(__name__)
@@ -14,22 +14,10 @@ path = "one.db"
 try:
     iniDatabase(path)
 except:
-    print("创建数据库报错")
+    pass
+    # print("创建数据库报错")
 
-def get_help():
-    return """<h3>帮助</h3><br/>
-    <p>输入城市名并点击查询查询该城市的天气数据；</p>
-    <p>点击帮助，获取帮助文档；</p>
-    <p>点击历史，获取历史查询信息；</p>"""
-
-#自动生成用户标识
-def get_user():
-    try:
-        cur_user = session['cur_user']
-    except:
-        cur_user = os.urandom(6)
-        session['cur_user'] = cur_user
-    return cur_user
+weather_dic = get_weathdic('weather_dic.txt')
 
 @app.route('/', methods=['GET', 'POST'])
 def getweather():
@@ -45,9 +33,10 @@ def getweather():
         historyOp = HistoryOp(cursor)
         weath = Weather()
         cur_user = get_user()
+        weatherdata = []
 
         action = request.form['action']
-        if action == "查询":
+        if action == "select":
             city = request.form['city']
             html = ''
             if city != '':
@@ -61,53 +50,49 @@ def getweather():
                         #若未查到则从API查询
                         cur_weath = weath.getnow(city)
 
-                    html = weath.printnow(cur_weath)
+                    weatherdata = [cur_weath]
+                    html = '<h3>实时天气数据</h3>'
                     #升级weather表和history表
                     weathOp.insertOneWeath(cur_weath)
                     hisdic = cur_weath + (cur_user, )
                     historyOp.insertOneHistory(hisdic)
                 except:
                     html = "查询错误！"
-            outputdata = html
+            title = html
 
-        elif action == "历史":
+        elif action == "history":
             history = historyOp.selectHistoryByUser(cur_user)
 
             if len(history) > 0:
+                weatherdata = history
                 html = "<h3>历史查询记录</h3>"
-                i = 1
-                for h_weather in history:
-                    html += "<br/>"
-                    html += f"{i}. "
-                    html += weath.printnow(h_weather)
-                    i += 1
-                outputdata = html
+                title = html
             else:
-                outputdata = "没有任何记录"
+                title = "没有任何记录"
 
-        elif action == "帮助":
-            outputdata = get_help()
+        elif action == "help":
+            title = get_help()
 
-        elif action == "更正":
+        elif action == "alter":
             alterData = request.form['city'].split()
             if len(alterData) == 2 :
                 city = alterData[0]
                 weather_text = alterData[1]
-                if weather_text in ['阴', '雪']:
+                if weather_text in weather_dic:
                     try:
                         weathOp.updateWeathByCity(weather_text, city)
-                        outputdata = "更正数据成功！"
+                        title = "更正数据成功！"
                     except:
-                        outputdata = "更正数据失败"
+                        title = "更正数据失败"
             else:
-                outputdata = "更正数据格式不正确"
+                title = "更正数据格式不正确"
         else:
-            outputdata = ""
+            title = ""
 
         cursor.close()
         conn.commit()
         conn.close()
-        return render_template('index.html', outputdata=outputdata)
+        return render_template('index.html', title=title, weatherdata=weatherdata)
 
 
 if __name__ == '__main__':

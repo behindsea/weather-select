@@ -26,6 +26,9 @@ def iniDatabase(path):
     conn.commit()
     conn.close()
 
+def cleanDatabase(cursor):
+    cursor.execute("""DELETE FROM WEATHER WHERE DATETIME(UPDATE_TEME) > DATETIME('now', '-10 minutes')""")
+
 
 class WeatherOp(object):
     """天气数据表操作类"""
@@ -51,9 +54,6 @@ class WeatherOp(object):
                     WHERE CITY = ?""", (city,))
         weathdic = self.cursor.fetchall()
         return weathdic
-
-    def deleteWeatherOuttime(self):
-        self.cursor.execute("""DELETE FROM WEATHER WHERE DATETIME(UPDATE_TEME) > DATETIME('now', '-10 minutes')""")
 
     # def close(self):
     #     self.cursor.close()
