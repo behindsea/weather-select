@@ -26,7 +26,7 @@ class Weather(object):
             now['text'],
             now['wind_direction'],
             now['temperature'],
-            datetime.utcnow().replace(tzinfo=timezone.utc).astimezone(timezone(timedelta(hours=8))))
+            str(datetime.utcnow().replace(tzinfo=timezone.utc).astimezone(timezone(timedelta(hours=8)))))
 
         return weathdir
 
