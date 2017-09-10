@@ -2,7 +2,6 @@ $(document).ready(function(){
 $("#select").click(function() {
   city = $("#city").val();
   if (city != "") {
-    alert(city);
     $.post("/select",{city:city}, function(result) {
       $("#Weatherdata").html(result);
     });
