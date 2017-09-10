@@ -21,3 +21,7 @@ def get_user():
         cur_user = os.urandom(6)
         session['cur_user'] = cur_user
     return cur_user
+
+def datetimeformat(value):
+    timestr = value[0:19]
+    return timestr

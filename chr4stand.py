@@ -4,11 +4,12 @@ from datetime import datetime,timezone,timedelta
 from flask import Flask, request, session, render_template
 from lib.Weather import Weather
 from lib.DataOp import WeatherOp, HistoryOp, iniDatabase, cleanDatabase
-from lib.ProgramAction import get_weathdic, get_help, get_user
+from lib.ProgramAction import get_weathdic, get_help, get_user, datetimeformat
 
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+app.add_template_filter(datetimeformat, 'datetimeformat')
 
 #初始化数据库
 path = "one.db"

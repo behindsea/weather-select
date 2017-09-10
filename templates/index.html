@@ -72,7 +72,7 @@
 						<p class="card-text">风向：{{ item[2] }}</p>
 						<p class="card-text">温度：{{ item[3] }}</p>
 					</div>
-					<div class="card-footer bg-transparent">{{ item[4] }}</div>
+					<div class="card-footer bg-transparent">{{item[4]|datetimeformat}}</div>
 				</div>
 				{% endfor %}
 
