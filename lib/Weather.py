@@ -1,5 +1,5 @@
 import requests
-import datetime
+from datetime import datetime,timezone,timedelta
 class Weather(object):
     """天气类，用于查询和打印天气数据"""
 
@@ -26,7 +26,7 @@ class Weather(object):
             now['text'],
             now['wind_direction'],
             now['temperature'],
-            datetime.datetime.now())
+            datetime.utcnow().replace(tzinfo=timezone.utc).astimezone(timezone(timedelta(hours=8))))
 
         return weathdir
 

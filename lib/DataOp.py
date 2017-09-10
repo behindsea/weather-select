@@ -27,7 +27,9 @@ def iniDatabase(path):
     conn.close()
 
 def cleanDatabase(cursor):
-    cursor.execute("""DELETE FROM WEATHER WHERE DATETIME(UPDATE_TEME) > DATETIME('now', '-10 minutes')""")
+    """清理超过1小时的天气数据和历史记录"""
+    cursor.execute("DELETE FROM WEATHER WHERE DATETIME(UPDATE_TIME) < DATETIME('now', '-60 minutes')")
+    cursor.execute("DELETE FROM HISTORY WHERE DATETIME(UPDATE_TIME) < DATETIME('now', '-60 minutes')")
 
 
 class WeatherOp(object):
