@@ -29,7 +29,6 @@ def iniDatabase(path):
 def cleanDatabase(cursor):
     """清理超过1小时的天气数据和历史记录"""
     cursor.execute("DELETE FROM WEATHER WHERE DATETIME(UPDATE_TIME) < DATETIME('now', '-60 minutes')")
-    cursor.execute("DELETE FROM HISTORY WHERE DATETIME(UPDATE_TIME) < DATETIME('now', '-60 minutes')")
 
 
 class WeatherOp(object):
@@ -82,7 +81,8 @@ class HistoryOp(object):
     def selectHistoryByUser(self, user):
         self.cursor.execute("""SELECT CITY, WEATHER_TXT, WIND_DIRECTION, TEMPERATURE, UPDATE_TIME
                     FROM HISTORY
-                    WHERE USER = ?""", (user,))
+                    WHERE USER = ? 
+                    ORDER BY UPDATE_TIME DESC""", (user,))
         hisdic = self.cursor.fetchall()
         return hisdic
 

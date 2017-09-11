@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from datetime import datetime, timezone, timedelta
-from flask import Flask, request, session, render_template, url_for
+from flask import Flask, request, session, render_template, make_response
 from lib.Weather import Weather
 from lib.DataOp import WeatherOp, HistoryOp, iniDatabase, cleanDatabase
 from lib.ProgramAction import get_weathdic, get_user, datetimeformat
@@ -22,11 +22,16 @@ except:
 weather_dic = get_weathdic('weather_dic.txt')
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    if not 'cur_user' in request.cookies:
+        resp = make_response(render_template('index.html'))
+        resp.set_cookie('cur_user', get_user())
+        return resp
+    else:
+        return render_template('index.html')
 
-@app.route('/select', methods=['GET', 'POST'])
+@app.route('/select', methods=['POST'])
 def getweather():
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
@@ -57,8 +62,7 @@ def getweather():
             weathOp.insertOneWeath(cur_weath)
             cur_time = datetime.utcnow().replace(
                 tzinfo=timezone.utc).astimezone(timezone(timedelta(hours=8)))
-            hisdic = (
-                        cur_weath[0], cur_weath[1], cur_weath[2], cur_weath[3], cur_time, cur_user)
+            hisdic = (cur_weath[0], cur_weath[1], cur_weath[2], cur_weath[3], cur_time, cur_user)
             historyOp.insertOneHistory(hisdic)
         except:
             title = "查询错误！"
@@ -68,7 +72,7 @@ def getweather():
     return render_template('card.html', title=title, weatherdata=weatherdata)
 
 
-@app.route('/history', methods=['GET', 'POST'])
+@app.route('/history', methods=['POST'])
 def gethistory():
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
@@ -97,7 +101,7 @@ def gethelp():
     return render_template('help.html')
 
 
-@app.route('/change', methods=['GET', 'POST'])
+@app.route('/change', methods=['POST'])
 def changedata():
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
